@@ -2,21 +2,35 @@ import gym, time
 import mujoco_py
 import os
 
+from gym import envs
+all_envs = envs.registry.all()
+env_ids = [env_spec.id for env_spec in all_envs]
+#print(sorted(env_ids))
 
-
-
-env = gym.make("CartPole-v0") #"Zaxxon-v4" Taxi-v3  "MontezumaRevenge-v0" HalfCheetah-v2 LunarLander-v2
-observation = env.reset()
-
-for _ in range(1000):
-    env.render()
-    #time.sleep(0.05)
-    action = env.action_space.sample()
-    observation, reward, done, info = env.step(action)
-
-    if done:
+for env_name in env_ids: #sorted(env_ids):
+    print('\nEnv: ', env_name)
+    if 'Hand' in env_name:
+        continue
+    else:    
+        env = gym.make(env_name) #"Zaxxon-v4" Taxi-v3  "MontezumaRevenge-v0" HalfCheetah-v2 LunarLander-v2
         observation = env.reset()
-env.close()
+
+        #try:
+        #    env.render()
+        #except:
+        #    continue
+            
+        '''
+        for _ in range(5):
+            env.render()
+            #time.sleep(0.05)
+            action = env.action_space.sample()
+            observation, reward, done, info = env.step(action)
+
+            if done:
+                observation = env.reset()
+        '''        
+        env.close()
 
 '''
 mj_path = mujoco_py.utils.discover_mujoco()
